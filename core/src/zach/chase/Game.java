@@ -2,35 +2,45 @@ package zach.chase;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class Game extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
-	Vector2d v;
-	
+	final float WIDTH =  320;
+	final float HEIGHT = 240;
+
+	ShapeRenderer shapeRenderer;
+	ExtendViewport viewport;
+	Movable m;
+
 	@Override
-	public void create () {
-		v = new Vector2d(1, 1);
-		batch = new SpriteBatch();
-		System.out.println(v.length());
-		img = new Texture("badlogic.jpg");
+	public void create() {
+		viewport = new ExtendViewport(WIDTH, HEIGHT);
+		shapeRenderer = new ShapeRenderer();
+		shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+		m = new Movable(new Vector2d(0,0), 10);
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.circle((float)m.pos.x(), (float)m.pos.y(), m.r());
+		shapeRenderer.end();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		viewport.update(width, height, false);
+		shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
 	}
 	
 	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
+	public void dispose() {
+		shapeRenderer.dispose();
 	}
 }
