@@ -1,5 +1,10 @@
 package zach.chase;
 
+/** 
+ * 2 dimensional vector
+ * <p>
+ * Code stolen/translated from 
+ * @author Alex Pantaleev */
 public class Vector2d {
 	private Double x, y;
 	private Double sqLength;	
