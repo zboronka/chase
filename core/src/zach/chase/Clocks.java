@@ -24,6 +24,10 @@ public class Clocks {
 		return cycles / Hz;
 	}
 
+	Clocks() {
+		update();
+	}
+
 	/** Adds a clock and returns a handle to it */
 	public Clock Clock(double startTime) {
 		Clock clock = new Clock(startTime);
@@ -36,7 +40,7 @@ public class Clocks {
 		return clocks.remove(clock);
 	}
 
-	/** Should be called before the main loop, updates time */
+	/** Updates time */
 	public void update() {
 		currentCycles = System.nanoTime();
 	}

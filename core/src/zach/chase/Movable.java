@@ -6,14 +6,12 @@ package zach.chase;
  */
 public class Movable {
 	private Vector2d pos;
-	private double mass;
 	private Vector2d v;
 	private double r;
 
-	Movable(Vector2d pos, double r, double mass) {
+	Movable(Vector2d pos, double r) {
 		this.pos = pos;
 		this.r = r;
-		this.mass = mass;
 
 		v = new Vector2d(0, 0);
 	}
@@ -34,8 +32,7 @@ public class Movable {
 		pos = pos.plus(v);
 	}
 
-	// TODO: this isn't correct, we need time for force
-	public void addForce(Vector2d force) {
-		v = v.times(mass).plus(force);
+	public void addV(Vector2d velocity) {
+		v = v.plus(velocity);
 	}
 }

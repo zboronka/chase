@@ -10,10 +10,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 public class Game extends ApplicationAdapter {
 	final float WIDTH =  320;
 	final float HEIGHT = 240;
-	final float frameDuration = 1000.0f / 30.0f;
+	final double frameDuration = 1000.0f / 30.0f; // Measured in milliseconds
 
 	ShapeRenderer shapeRenderer;
 	ExtendViewport viewport;
+	Clocks clocks;
+	Clock clock;
+	double lastTime;
+
 	Movable m;
 
 	@Override
@@ -21,18 +25,36 @@ public class Game extends ApplicationAdapter {
 		viewport = new ExtendViewport(WIDTH, HEIGHT);
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
-		m = new Movable(new Vector2d(0,0), 10d, 1d);
-		m.addForce(new Vector2d(1,1));
+		clocks = new Clocks();
+		clock = clocks.Clock(0);
+		lastTime = clock.time();
+
+		m = new Movable(new Vector2d(0,0), 10d);
+		m.addV(new Vector2d(1.0,1.0));
 	}
 
 	@Override
 	public void render() {
+		clocks.tick();
+		double currentTime = clock.time();
+		double delta = currentTime - lastTime;
+		lastTime = currentTime;
+		m.update(delta);
+
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.circle((float)m.pos().x(), (float)m.pos().y(), (float)m.r());
 		shapeRenderer.end();
+
+		clocks.tick();
+		double sleepTime = frameDuration - ((clock.time() - lastTime) * 1000); // Convert to milliseconds and subtract from frameDuration
+		try {
+			if(sleepTime > 0) Thread.sleep((long)sleepTime);
+		} catch (InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	@Override
