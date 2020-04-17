@@ -12,7 +12,6 @@ public class Game extends ApplicationAdapter {
 	final float HEIGHT = 240;
 	final double frameDuration = 1000.0f / 30.0f; // Measured in milliseconds
 
-	ShapeRenderer shapeRenderer;
 	ExtendViewport viewport;
 	Clocks clocks;
 	Clock clock;
@@ -23,14 +22,14 @@ public class Game extends ApplicationAdapter {
 	@Override
 	public void create() {
 		viewport = new ExtendViewport(WIDTH, HEIGHT);
-		shapeRenderer = new ShapeRenderer();
-		shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+		Graphics.setProjectionMatrix(viewport.getCamera().combined);
 		clocks = new Clocks();
 		clock = clocks.Clock(0);
 		lastTime = clock.time();
 
 		m = new Movable(new Vector2d(0,0), 10d);
 		m.addV(new Vector2d(1.0,1.0));
+		Graphics.addMember(m);
 	}
 
 	@Override
@@ -39,14 +38,11 @@ public class Game extends ApplicationAdapter {
 		double currentTime = clock.time();
 		double delta = currentTime - lastTime;
 		lastTime = currentTime;
-		m.update(delta);
 
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.circle((float)m.pos().x(), (float)m.pos().y(), (float)m.r());
-		shapeRenderer.end();
+		Graphics.update(delta);
 
 		clocks.tick();
 		double sleepTime = frameDuration - ((clock.time() - lastTime) * 1000); // Convert to milliseconds and subtract from frameDuration
@@ -60,11 +56,11 @@ public class Game extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		viewport.update(width, height, false);
-		shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
+		Graphics.setProjectionMatrix(viewport.getCamera().combined);
 	}
 	
 	@Override
 	public void dispose() {
-		shapeRenderer.dispose();
+		Graphics.dispose();
 	}
 }

@@ -1,5 +1,7 @@
 package zach.chase;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+
 /** 
  * Base class for movable objects
  * @author Zach Boronka 
@@ -34,5 +36,11 @@ public class Movable {
 
 	public void addV(Vector2d velocity) {
 		v = v.plus(velocity);
+	}
+
+	public void render() {
+		Graphics.renderer.begin(ShapeType.Filled);
+		Graphics.renderer.circle((float)pos.x(), (float)pos.y(), (float)r);
+		Graphics.renderer.end();
 	}
 }
