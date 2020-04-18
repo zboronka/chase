@@ -4,32 +4,36 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class Game extends ApplicationAdapter {
-	final float WIDTH =  320;
-	final float HEIGHT = 240;
+	final static float WIDTH =  320;
+	final static float HEIGHT = 240;
+	final static float A_R = WIDTH/HEIGHT; // Aspect ratio
 	final double frameDuration = 1000.0f / 30.0f; // Measured in milliseconds
 
 	ExtendViewport viewport;
+	Controller controller;
 	Clocks clocks;
 	Clock clock;
 	double lastTime;
 
-	Movable m;
+	Player player;
 
 	@Override
 	public void create() {
 		viewport = new ExtendViewport(WIDTH, HEIGHT);
 		Graphics.setProjectionMatrix(viewport.getCamera().combined);
+
+		player = new Player(new Vector2d(-100,60), new Vector2d(-1.0, 0.0), 10d);
+		Graphics.addMember(player);
+		Graphics.addMember(new Obstacle(-80.0, 40.0, 80.0, 60.0));
+
+		controller = new Controller();
+		Gdx.input.setInputProcessor(controller);
+
 		clocks = new Clocks();
 		clock = clocks.Clock(0);
 		lastTime = clock.time();
-
-		m = new Movable(new Vector2d(0,0), 10d);
-		m.addV(new Vector2d(1.0,1.0));
-		Graphics.addMember(m);
 	}
 
 	@Override
@@ -39,7 +43,7 @@ public class Game extends ApplicationAdapter {
 		double delta = currentTime - lastTime;
 		lastTime = currentTime;
 
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		Graphics.update(delta);

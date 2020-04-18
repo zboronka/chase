@@ -1,5 +1,7 @@
 package zach.chase;
 
+import com.badlogic.gdx.math.Vector2;
+
 /** 
  * 2 dimensional vector
  * <p>
@@ -63,6 +65,10 @@ public class Vector2d {
   	public Vector2d rotate(double angle) {
     	return new Vector2d(x * Math.cos(angle) - y * Math.sin(angle), y * Math.cos(angle) + x * Math.sin(angle));
   	}
+
+	public Vector2 toVector2() {
+		return new Vector2((float)x(), (float)y());
+	}
 
   	@Override
   	public String toString() {
