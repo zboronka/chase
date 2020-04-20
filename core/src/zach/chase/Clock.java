@@ -9,7 +9,7 @@ public class Clock {
 	private long cycles;
 	private boolean paused = false;
 
-	Clock(double startTime) {
+	public Clock(double startTime) {
 		set(startTime);
 	}
 

@@ -24,7 +24,7 @@ public class Clocks {
 		return cycles / Hz;
 	}
 
-	Clocks() {
+	public Clocks() {
 		update();
 	}
 

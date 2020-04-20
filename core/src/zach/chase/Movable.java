@@ -2,6 +2,8 @@ package zach.chase;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
+import zach.chase.views.MainScreen;
+
 /** 
  * Base class for movable objects
  * @author Zach Boronka 
@@ -14,7 +16,7 @@ public class Movable implements GameObject {
 
 	protected boolean up = true, left = true, down = true, right = true;
 
-	Movable(Vector2d pos, double r) {
+	public Movable(Vector2d pos, double r) {
 		this.pos = pos;
 		this.r = r;
 
@@ -22,7 +24,7 @@ public class Movable implements GameObject {
 		dir = new Vector2d(1, 0);
 	}
 
-	Movable(Vector2d pos, Vector2d dir, double r) {
+	public Movable(Vector2d pos, Vector2d dir, double r) {
 		this.pos = pos;
 		this.dir = dir;
 		this.r = r;
@@ -67,31 +69,31 @@ public class Movable implements GameObject {
 	}
 
 	public void update(double delta) {
-		if(pos.x() <= -Game.WIDTH/2+r) {
+		if(pos.x() <= -MainScreen.WIDTH/2+r) {
 			left = false;
-			v = new Vector2d(0, 0);
-			pos = new Vector2d(-Game.WIDTH/2+r+0.1, pos.y());
+			v = new Vector2d(0, v.y());
+			pos = new Vector2d(-MainScreen.WIDTH/2+r+0.1, pos.y());
 		} else {
 			left = true;
 		}
-		if(pos.x() >= Game.WIDTH/2-r) {
+		if(pos.x() >= MainScreen.WIDTH/2-r) {
 			right = false;
-			v = new Vector2d(0, 0);
-			pos = new Vector2d(Game.WIDTH/2-r-0.1, pos.y());
+			v = new Vector2d(0, v.y());
+			pos = new Vector2d(MainScreen.WIDTH/2-r-0.1, pos.y());
 		} else {
 			right = true;
 		}
-		if(pos.y() >= Game.HEIGHT/2-r) {
+		if(pos.y() >= MainScreen.HEIGHT/2-r) {
 			up = false;
-			v = new Vector2d(0, 0);
-			pos = new Vector2d(pos.x(), Game.HEIGHT/2-r-0.1);
+			v = new Vector2d(v.x(), 0);
+			pos = new Vector2d(pos.x(), MainScreen.HEIGHT/2-r-0.1);
 		} else {
 			up = true;
 		}
-		if(pos.y() <= -Game.HEIGHT/2+r) {
+		if(pos.y() <= -MainScreen.HEIGHT/2+r) {
 			down = false;
-			v = new Vector2d(0, 0);
-			pos = new Vector2d(pos.x(), -Game.HEIGHT/2+r+0.1);
+			v = new Vector2d(v.x(), 0);
+			pos = new Vector2d(pos.x(), -MainScreen.HEIGHT/2+r+0.1);
 		} else {
 			down = true;
 		}
@@ -109,5 +111,48 @@ public class Movable implements GameObject {
 		Graphics.renderer.setColor(0.0f, 0.0f, 0.0f, 1.0f);
 		Graphics.renderer.line(pos.toVector2(), pos.plus(dir.times(r)).toVector2());
 		Graphics.renderer.end();
+	}
+
+	public boolean collision(Movable that) {
+		if(this == that) {
+			return false;
+		}
+
+		double distance = new Vector2d(pos().x() - that.pos().x(), pos().y() - that.pos().y()).length();
+		return distance <= r + that.r();
+	}
+
+	public void hitObstacle(Obstacle obstacle) {
+		if(obstacle.pos().x() - r <= pos.x() && pos.x() <= obstacle.pos().x() + obstacle.width() + r &&
+		   obstacle.pos().y() - r <= pos.y() && pos.y() <= obstacle.pos().y() + obstacle.height() + r) {
+		   	if(pos.x() <= obstacle.pos().x()) {
+				right = false;
+				v = new Vector2d(0, v.y());
+				pos = new Vector2d(obstacle.pos().x()-r-0.1, pos.y());
+			} else {
+				right = true;
+			}
+			if(pos.x() >= obstacle.pos().x() + obstacle.width()) {
+				left = false;
+				v = new Vector2d(0, v.y());
+				pos = new Vector2d(obstacle.pos().x() + obstacle.width() + r + 0.1, pos.y());
+			} else {
+				left = true;
+			}
+		   	if(pos.y() <= obstacle.pos().y()) {
+				up = false;
+				v = new Vector2d(v.x(), 0);
+				pos = new Vector2d(pos.x(), obstacle.pos().y()-r-0.1);
+			} else {
+				up = true;
+			}
+			if(pos.y() >= obstacle.pos().y() + obstacle.height()) {
+				down = false;
+				v = new Vector2d(v.x(), 0);
+				pos = new Vector2d(pos.x(), obstacle.pos().y() + obstacle.height() + r + 0.1);
+			} else {
+				down = true;
+			}
+		}
 	}
 }

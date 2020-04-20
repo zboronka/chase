@@ -6,7 +6,7 @@ public class Obstacle implements GameObject {
 	private double left, bottom, width, height;
 	private Vector2d pos;
 
-	Obstacle(double left, double bottom, double width, double height) {
+	public Obstacle(double left, double bottom, double width, double height) {
 		this.left = left;
 		this.bottom = bottom;
 		this.width = width;
@@ -25,5 +25,13 @@ public class Obstacle implements GameObject {
 
 	public Vector2d pos() {
 		return pos;
+	}
+
+	public double width() {
+		return width;
+	}
+	
+	public double height() {
+		return height;
 	}
 }
