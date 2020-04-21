@@ -21,7 +21,7 @@ public class MainScreen implements Screen {
 	double lastTime;
 
 	Player player;
-	Movable guard;
+	Guard guard;
 	Obstacle theRoom;
 
 	Chase parent;
@@ -32,16 +32,16 @@ public class MainScreen implements Screen {
 		viewport = new ExtendViewport(WIDTH, HEIGHT);
 		Graphics.setProjectionMatrix(viewport.getCamera().combined);
 
-		player = new Player(new Vector2d(-100,60), new Vector2d(-1.0, 0.0), 10d);
-		guard = new Movable(new Vector2d(0.0, 0.0), new Vector2d(0.0, 1.0), 10d);
+		player = new Player(new Vector2d(-100,60), new Vector2d(-1.0, 0.0), 10d, 2);
+		guard = new Guard(new Vector2d(10.1, 19.9), new Vector2d(1.0, 0.0), 10d, 1);
 		theRoom = new Obstacle(-80.0, 30.0, 80.0, 60.0);
 		
+		Collidables.addObstacle(theRoom);
 		Collidables.addMovable(player);
 		Collidables.addMovable(guard);
-		Collidables.addObstacle(theRoom);
+		Graphics.addMember(theRoom);
 		Graphics.addMember(player);
 		Graphics.addMember(guard);
-		Graphics.addMember(theRoom);
 
 		controller = new Controller();
 		Gdx.input.setInputProcessor(controller);

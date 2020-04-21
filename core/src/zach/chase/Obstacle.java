@@ -18,7 +18,7 @@ public class Obstacle implements GameObject {
 
 	public void render() {
 		Graphics.renderer.begin(ShapeType.Filled);
-		Graphics.renderer.setColor(1.0f, 1.0f, 0.0f, 1.0f);
+		Graphics.renderer.setColor(0.5f, 0.15f, 0.7f, 1.0f);
 		Graphics.renderer.box((float)left, (float)bottom, 0.0f, (float)width, (float)height, 0.0f);
 		Graphics.renderer.end();
 	}

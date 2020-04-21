@@ -4,12 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 
 public class Player extends Movable {
-	public Player(Vector2d pos, double r) {
-		super(pos, r);
-	}
-
-	public Player(Vector2d pos, Vector2d dir, double r) {
-		super(pos, dir, r);
+	public Player(Vector2d pos, Vector2d dir, double r, double max_speed) {
+		super(pos, dir, r,max_speed);
 	}
 
 	@Override

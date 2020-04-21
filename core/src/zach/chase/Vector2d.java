@@ -53,7 +53,7 @@ public class Vector2d {
      	return x * that.x + y * that.y;
 	}
 
-  	//pseudo-cross in 2D, take the z-component only as a scalar
+  	// pseudo-cross in 2D, take the z-component only as a scalar
   	public double cross (Vector2d that) {
     	return x * that.y - y * that.x;
   	}

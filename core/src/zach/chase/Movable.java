@@ -9,31 +9,29 @@ import zach.chase.views.MainScreen;
  * @author Zach Boronka 
  */
 public class Movable implements GameObject {
-	private Vector2d pos;
-	private Vector2d dir;
-	private Vector2d v;
-	private double r;
+	protected Vector2d pos;
+	protected Vector2d dir;
+	protected Vector2d v;
+	protected double r;
+	protected double max_speed;
 
 	protected boolean up = true, left = true, down = true, right = true;
 
-	public Movable(Vector2d pos, double r) {
-		this.pos = pos;
-		this.r = r;
-
-		v = new Vector2d(0, 0);
-		dir = new Vector2d(1, 0);
-	}
-
-	public Movable(Vector2d pos, Vector2d dir, double r) {
+	public Movable(Vector2d pos, Vector2d dir, double r, double max_speed) {
 		this.pos = pos;
 		this.dir = dir;
 		this.r = r;
+		this.max_speed = max_speed;
 
 		v = new Vector2d(0, 0);
 	}
 
 	public Vector2d pos() {
 		return pos;
+	}
+
+	public Vector2d dir() {
+		return dir;
 	}
 
 	public Vector2d v() {
@@ -46,10 +44,17 @@ public class Movable implements GameObject {
 
 	public void addV(Vector2d velocity) {
 		v = v.plus(velocity);
+		clampSpeed();
 	}
 
 	public void addV(double x, double y) {
 		v = v.plus(new Vector2d(x, y));
+		clampSpeed();
+	}
+
+	private void clampSpeed() {
+		if(v.length() > max_speed)
+			v = v.normalize().times(max_speed);
 	}
 
 	public void slow() {
