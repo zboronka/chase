@@ -27,4 +27,17 @@ public class Collidables {
 			for(Obstacle obstacle : obstacles) movable.hitObstacle(obstacle);
 		}
 	}
+
+	public static void dispose() {
+		movables.clear();
+		obstacles.clear();
+	}
+
+	public static double toRadians(double atan2) {
+		return (atan2 + 2*Math.PI) % (2*Math.PI);
+	}
+
+	public static double toAtan2(double radians) {
+		return (radians + 3 * Math.PI) % (2*Math.PI) - Math.PI;
+	}
 }

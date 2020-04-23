@@ -58,7 +58,11 @@ public class Movable implements GameObject {
 	}
 
 	public void slow() {
-		v = v.plus(v.negative().times(0.1));
+		slow(0.1);
+	}
+
+	public void slow(double speed) {
+		v = v.plus(v.negative().times(speed));
 	}
 
 	public void stop() {
@@ -71,6 +75,20 @@ public class Movable implements GameObject {
 
 	public void rotate(double angle) {
 		dir = dir.rotate(angle);
+	}
+
+	public void seek(Vector2d target) {
+		Vector2d desired_v = pos.minus(target).normalize().times(max_speed);
+		Vector2d steering = desired_v.minus(v);
+
+		double des_a = Collidables.toRadians(Math.atan2(desired_v.y(), desired_v.x()));
+		double dir_a = Collidables.toRadians(Math.atan2(dir.y(), dir.x()));
+		double diff = Collidables.toAtan2(dir_a - des_a);
+
+		double rate = diff * 0.03;
+
+		rotate(rate);
+		thrust(0.1);
 	}
 
 	public void update(double delta) {

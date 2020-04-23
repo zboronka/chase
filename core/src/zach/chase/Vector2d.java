@@ -59,7 +59,7 @@ public class Vector2d {
   	}
 
   	public Vector2d normalize() {
-    	return new Vector2d(x / length, y / length);
+    	return new Vector2d(x / length(), y / length());
   	}
 
   	public Vector2d rotate(double angle) {

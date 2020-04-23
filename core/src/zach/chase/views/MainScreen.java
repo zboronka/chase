@@ -39,6 +39,7 @@ public class MainScreen implements Screen {
 		Collidables.addObstacle(theRoom);
 		Collidables.addMovable(player);
 		Collidables.addMovable(guard);
+
 		Graphics.addMember(theRoom);
 		Graphics.addMember(player);
 		Graphics.addMember(guard);
@@ -58,8 +59,10 @@ public class MainScreen implements Screen {
 
 	@Override
 	public void render(float d) {
-		if(Collidables.lose)
+		if(Collidables.lose) {
+			dispose();
 			parent.changeScreen(Chase.ScreenType.ENDGAME);
+		}
 
 		clocks.tick();
 		double currentTime = clock.time();
@@ -102,5 +105,6 @@ public class MainScreen implements Screen {
 	@Override
 	public void dispose() {
 		Graphics.dispose();
+		Collidables.dispose();
 	}
 }

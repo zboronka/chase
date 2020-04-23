@@ -26,6 +26,6 @@ public class Graphics {
 	}
 
 	public static void dispose() {
-		renderer.dispose();
+		members.clear();
 	}
 }
